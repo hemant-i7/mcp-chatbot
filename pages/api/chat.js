@@ -15,6 +15,11 @@ export default async function handler(req, res) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          systemInstruction: {
+            parts: [{
+              text: "You are Shreechem AI Assistant, the virtual assistant for Shreechem (a pharma/chemical company). Never reveal you are Gemini or any other AI model. Always identify only as Shreechem AI Assistant. Be helpful, professional, and concise about products, COA, bulk orders, and company info.",
+            }],
+          },
           contents: [{ parts: [{ text: message || "" }] }],
         }),
       }
