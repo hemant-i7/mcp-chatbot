@@ -2,6 +2,16 @@ import { useState, useRef, useEffect } from "react";
 
 const CHAT_API = "/api/chat";
 
+const COLORS = {
+  red: "#C8102E",
+  redDark: "#A50E25",
+  white: "#FFFFFF",
+  bgLight: "#F6F8FA",
+  grey: "#E4E7EC",
+  text: "#1D2939",
+  textMuted: "#667085",
+};
+
 export default function Chat() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
@@ -45,23 +55,48 @@ export default function Chat() {
   };
 
   return (
-    <div className="flex flex-col h-screen max-w-2xl mx-auto bg-slate-50 dark:bg-slate-900">
-      <header className="flex-none px-4 py-3 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 shadow-sm">
-        <h1 className="text-lg font-semibold text-slate-800 dark:text-slate-100">Chat</h1>
+    <div
+      className="flex flex-col h-screen max-w-2xl mx-auto font-sans antialiased"
+      style={{ background: COLORS.bgLight }}
+    >
+      <header
+        className="flex-none px-5 py-4 flex items-center justify-between shadow-lg"
+        style={{
+          background: `linear-gradient(135deg, ${COLORS.red}, ${COLORS.redDark})`,
+          color: COLORS.white,
+        }}
+      >
+        <h1 className="text-lg font-semibold tracking-tight">Shreechem AI Assistant</h1>
+        <span className="flex items-center gap-1.5 text-xs font-medium opacity-90">
+          <span className="w-2 h-2 rounded-full bg-green-300 animate-pulse" /> Online
+        </span>
       </header>
 
-      <div className="flex-1 overflow-y-auto p-4 space-y-3">
+      <div className="flex-1 overflow-y-auto p-5 space-y-4" style={{ background: COLORS.bgLight }}>
+        {messages.length === 0 && (
+          <div
+            className="max-w-[85%] rounded-2xl px-4 py-3"
+            style={{ background: COLORS.grey, color: COLORS.text }}
+          >
+            Hi 👋 Welcome to Shreechem AI Assistant. How can I help you today?
+          </div>
+        )}
         {messages.map((m, i) => (
           <div
             key={i}
             className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}
           >
             <div
-              className={`max-w-[85%] rounded-2xl px-4 py-2 ${
+              className={`max-w-[85%] rounded-2xl px-4 py-3 ${
                 m.role === "user"
-                  ? "bg-blue-500 text-white rounded-br-md"
-                  : "bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 rounded-bl-md shadow"
+                  ? "rounded-br-md"
+                  : "rounded-bl-md"
               }`}
+              style={
+                m.role === "user"
+                  ? { background: COLORS.red, color: COLORS.white }
+                  : { background: COLORS.grey, color: COLORS.text }
+              }
             >
               {m.content}
             </div>
@@ -69,33 +104,47 @@ export default function Chat() {
         ))}
         {isLoading && (
           <div className="flex justify-start">
-            <div className="bg-white dark:bg-slate-700 rounded-2xl rounded-bl-md px-4 py-2 shadow animate-pulse">
-              ...
+            <div
+              className="rounded-2xl rounded-bl-md px-4 py-3 flex gap-1"
+              style={{ background: COLORS.grey, color: COLORS.textMuted }}
+            >
+              <span className="animate-bounce" style={{ animationDelay: "0ms" }}>.</span>
+              <span className="animate-bounce" style={{ animationDelay: "150ms" }}>.</span>
+              <span className="animate-bounce" style={{ animationDelay: "300ms" }}>.</span>
             </div>
           </div>
         )}
         <div ref={messagesEndRef} />
       </div>
 
-      <div className="flex-none p-4 border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">
-        <div className="flex gap-2">
-          <input
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && handleSend()}
-            placeholder="Type a message..."
-            className="flex-1 px-4 py-2 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            disabled={isLoading}
-          />
-          <button
-            onClick={handleSend}
-            disabled={isLoading || !input.trim()}
-            className="px-4 py-2 bg-blue-500 text-white rounded-xl font-medium hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            Send
-          </button>
-        </div>
+      <div
+        className="flex-none p-4 flex gap-3 items-center"
+        style={{ background: COLORS.white, borderTop: "1px solid #E4E7EC", boxShadow: "0 -2px 10px rgba(0,0,0,0.04)" }}
+      >
+        <input
+          type="text"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && handleSend()}
+          placeholder="Ask about products, COA, or bulk orders..."
+          className="flex-1 px-5 py-3 rounded-full outline-none focus:ring-2 transition"
+          style={{
+            background: COLORS.bgLight,
+            color: COLORS.text,
+            border: "1px solid #E4E7EC",
+          }}
+          disabled={isLoading}
+        />
+        <button
+          onClick={handleSend}
+          disabled={isLoading || !input.trim()}
+          className="w-12 h-12 rounded-full font-medium flex items-center justify-center transition hover:scale-105 hover:bg-[#A50E25] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+          style={{ background: COLORS.red, color: COLORS.white }}
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" />
+          </svg>
+        </button>
       </div>
     </div>
   );

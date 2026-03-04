@@ -1,0 +1,98 @@
+<!-- Add to WordPress: Appearance > Theme File Editor > footer.php, or use "Insert Headers and Footers" plugin -->
+<!-- Replace CHAT_URL with your deployed chat URL, e.g. https://your-app.vercel.app/chat -->
+
+<div id="chat-widget-icon" aria-label="Open chat">💬</div>
+<div id="chat-widget-window" style="display:none">
+  <div id="chat-widget-overlay"></div>
+  <div id="chat-widget-frame-wrap">
+    <button id="chat-widget-close">×</button>
+    <iframe id="chat-widget-iframe" src="" title="Chat"></iframe>
+  </div>
+</div>
+
+<style>
+#chat-widget-icon {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 56px;
+  height: 56px;
+  background: linear-gradient(135deg, #C8102E, #A50E25);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(200,16,46,0.4);
+  z-index: 999998;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+#chat-widget-icon:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(200,16,46,0.5);
+}
+#chat-widget-window { position: fixed; inset: 0; z-index: 999999; }
+#chat-widget-overlay {
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,0.4);
+  cursor: pointer;
+}
+#chat-widget-frame-wrap {
+  position: absolute;
+  bottom: 24px;
+  right: 24px;
+  width: 420px;
+  height: 600px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  overflow: hidden;
+}
+#chat-widget-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: rgba(0,0,0,0.1);
+  border-radius: 50%;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 1;
+  line-height: 1;
+}
+#chat-widget-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+@media (max-width: 480px) {
+  #chat-widget-frame-wrap { width: calc(100vw - 32px); right: 16px; left: 16px; height: 70vh; }
+}
+</style>
+
+<script>
+(function() {
+  var CHAT_URL = 'https://mcp-chatbot-pied.vercel.app/chat';
+  var icon = document.getElementById('chat-widget-icon');
+  var win = document.getElementById('chat-widget-window');
+  var overlay = document.getElementById('chat-widget-overlay');
+  var iframe = document.getElementById('chat-widget-iframe');
+  var closeBtn = document.getElementById('chat-widget-close');
+
+  function openChat() {
+    iframe.src = CHAT_URL;
+    win.style.display = 'block';
+  }
+  function closeChat() {
+    win.style.display = 'none';
+  }
+
+  icon && icon.addEventListener('click', openChat);
+  overlay && overlay.addEventListener('click', closeChat);
+  closeBtn && closeBtn.addEventListener('click', closeChat);
+})();
+</script>
