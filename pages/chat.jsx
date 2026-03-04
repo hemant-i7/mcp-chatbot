@@ -67,9 +67,6 @@ export default function Chat() {
         }}
       >
         <h1 className="text-lg font-semibold tracking-tight">Shreechem AI Assistant</h1>
-        <span className="flex items-center gap-1.5 text-xs font-medium opacity-90">
-          <span className="w-2 h-2 rounded-full bg-green-300 animate-pulse" /> Online
-        </span>
       </header>
 
       <div className="flex-1 overflow-y-auto p-5 space-y-4" style={{ background: COLORS.bgLight }}>
