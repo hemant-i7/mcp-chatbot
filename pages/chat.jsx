@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 
-const N8N_WEBHOOK_URL = "https://n8n-main-instance-production-549c.up.railway.app/webhook/chat";
+const CHAT_API = "/api/chat";
 
 export default function Chat() {
   const [messages, setMessages] = useState([]);
@@ -26,7 +26,7 @@ export default function Chat() {
     setIsLoading(true);
 
     try {
-      const res = await fetch(N8N_WEBHOOK_URL, {
+      const res = await fetch(CHAT_API, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: text }),
