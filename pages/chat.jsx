@@ -1,6 +1,29 @@
 import { useState, useRef, useEffect } from "react";
+import ReactMarkdown from "react-markdown";
 
 const CHAT_API = "/api/chat";
+const TYPEWRITER_MS = 40;
+
+function MessageBubble({ content, isAssistant, animate }) {
+  const [shown, setShown] = useState(animate ? "" : content);
+
+  useEffect(() => {
+    if (!animate || shown.length >= content.length) return;
+    const t = setTimeout(() => setShown(content.slice(0, shown.length + 1)), TYPEWRITER_MS);
+    return () => clearTimeout(t);
+  }, [animate, content, shown]);
+
+  const text = animate ? shown : content;
+  const isUser = !isAssistant;
+  return (
+    <div className="[&_strong]:font-semibold [&_p]:my-1 [&_p:last-child]:mb-0">
+      {isUser ? <span>{text}</span> : <ReactMarkdown>{text}</ReactMarkdown>}
+      {animate && shown.length < content.length && (
+        <span className="animate-pulse inline-block w-2 h-4 ml-0.5 align-middle bg-current opacity-70" />
+      )}
+    </div>
+  );
+}
 
 const COLORS = {
   red: "#C8102E",
@@ -95,7 +118,11 @@ export default function Chat() {
                   : { background: COLORS.grey, color: COLORS.text }
               }
             >
-              {m.content}
+              <MessageBubble
+                content={m.content}
+                isAssistant={m.role === "assistant"}
+                animate={m.role === "assistant" && i === messages.length - 1}
+              />
             </div>
           </div>
         ))}
