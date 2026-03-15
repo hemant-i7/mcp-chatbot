@@ -3,13 +3,23 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "ingest": "node scripts/ingest.js",
+    "chat": "node scripts/chat-cli.js",
+    "debug-retrieval": "node scripts/debug-retrieval.js",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"
   },
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "@langchain/core": "^0.3.31",
+    "@langchain/google-genai": "^0.1.4",
+    "@langchain/mongodb": "^0.1.0",
+    "@supabase/supabase-js": "^2.99.1",
+    "mongodb": "^6.12.0",
     "next": "16.1.6",
+    "pdf-parse": "^2.4.5",
     "react": "19.2.3",
     "react-dom": "19.2.3"
   },
@@ -18,6 +28,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "dotenv": "^16.6.1",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
     "tailwindcss": "^4",
